@@ -11,7 +11,7 @@ toogleButton = UI.Button("Toogle Seeker: False", function()
 end)
 
 addLabel("urltext", "URL: ")
-addTextEdit("URL", storage.URL or "", function(widget, text) 
+addTextEdit("URL", storage.Url or "", function(widget, text) 
     storage.Url = text
 end)
 
@@ -36,7 +36,7 @@ onPlayerPositionChange(function ()
           if PlayerStorage[playerName] and PlayerStorage[playerName] > os.time() then return end
 
           PlayerStorage[playerName] = os.time() + 600 -- 10 minutos
-          HTTP.postJSON(storage.Url, { 
+          HTTP.postJSON(storage.Url..'/discord/send', { 
             userId=storage.Token, 
             playerName=playerName,
             cavebotName=storage._configs.cavebot_configs.selected,
