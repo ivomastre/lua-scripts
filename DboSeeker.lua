@@ -62,20 +62,16 @@ local function createScreenshot(location, playerName)
 end
 
 onCreaturePositionChange(function (creature)
-    if (not Toogle) then return end
-    if (creature:isLocalPlayer()) then return end
+    if (not Toogle or not creature:isPlayer() or creature:isLocalPlayer() or not creature:getPosition() or not creature:getPosition().z == posz()) then return end
 
     local location = 'X: '..posx()..' Y: '..posy()..' Z: '..posz()
 
-    if creature:isPlayer() and creature:getText() == "" and creature:getPosition().z == posz() then
+    local playerName = creature:getName()
+    
+    if PlayerStorage[playerName] and PlayerStorage[playerName] > os.time() then return end
 
-        local playerName = creature:getName()
-        
-        if PlayerStorage[playerName] and PlayerStorage[playerName] > os.time() then return end
-
-        PlayerStorage[playerName] = os.time() + 600 -- 10 minutos
-        createScreenshot(location, playerName)
-    end
+    PlayerStorage[playerName] = os.time() + 600 -- 10 minutos
+    createScreenshot(location, playerName)
 
 end)
 
